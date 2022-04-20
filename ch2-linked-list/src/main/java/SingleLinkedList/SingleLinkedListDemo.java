@@ -49,6 +49,13 @@ public class SingleLinkedListDemo {
 
         // 双指针查找单链表中倒数第k个节点
         System.out.println("双指针法查找倒数第2个节点：" + findLastIndexNodeBy2Pointer(singleLinkedList.getHeadNode(), 2));
+
+        // 单链表反转
+        System.out.println("链表反转====");
+        reverse(singleLinkedList.getHeadNode());
+        singleLinkedList.list();
+
+        //
     }
 
 
@@ -137,10 +144,45 @@ public class SingleLinkedListDemo {
 
     /**
      * 单链表的反转【腾讯面试题】
-     *      1、
+     *      1、创建一个新的头节点，从原先链表上摘下节点创建新的链表
+     *      2、辅助指针指向当前节点，为防止摘下当前节点后导致链表断裂，
+     *          应该提前记下当前节点的下一个节点next
+     *      3、取下当前节点，以头插法的方式插入信息链表中
+     *          - 当前节点的next指向头节点的next节点
+     *          - 头节点的next指向当前节点【注意顺序】
+     *      4、当前节点向后移动，cur = next;
+     *      5、循环上述步骤直到cur为空
+     *      6、循环结束，应该将传入的头节点的next指向新创建链表的头节点的next域
+     *      7、新链表的头节点的next清空，会由垃圾回收机制进行回收
      */
-    public void reverse(){
+    public static void reverse(HeroNode head){
+        // 链表为空 链表中只有一个节点：无需反转，直接返回
+        if(head == null || head.next == null || head.next.next == null){
+            return;
+        }
 
+        // 定义辅助指针，帮助遍历链表
+        HeroNode cur = head.next;
+        HeroNode next = null;  // 当前节点的下一个节点
+
+        // 定义一个新的头节点
+        HeroNode reverseHeadNode = new HeroNode(0, "", "");
+
+
+        // 遍历链表，使用头插法创建一个新的链表
+        while (cur != null){
+            // 保存当前节点的下一个节点
+            next = cur.next;
+
+            // 头插法插入节点
+            cur.next = reverseHeadNode.next;
+            reverseHeadNode.next = cur;
+            // cur处理完，向后移动
+            cur = next;
+        }
+
+        head.next = reverseHeadNode.next;
+        reverseHeadNode.next = null;
     }
 
 }
