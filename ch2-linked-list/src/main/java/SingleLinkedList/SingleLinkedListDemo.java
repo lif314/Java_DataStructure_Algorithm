@@ -1,7 +1,6 @@
 package SingleLinkedList;
 
-import java.awt.*;
-import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  * 需求：- 使用带head节点的单向链表的实现—水浒传英雄**排行榜管理**
@@ -55,7 +54,13 @@ public class SingleLinkedListDemo {
         reverse(singleLinkedList.getHeadNode());
         singleLinkedList.list();
 
-        //
+        // 递归打印链表
+        System.out.println("递归打印链表===");
+        reverseList(singleLinkedList.getHeadNode());
+
+        // 使用栈进行逆向打印链表
+        System.out.println("栈逆序打印链表====");
+        reverseListByStack(singleLinkedList.getHeadNode());
     }
 
 
@@ -183,6 +188,53 @@ public class SingleLinkedListDemo {
 
         head.next = reverseHeadNode.next;
         reverseHeadNode.next = null;
+    }
+
+    /**
+     * 递归打印：从尾到头打印单链表【百度】
+     *      1、递归的底层是栈实现的，所以可以实现逆向打印
+     *      2、传入头节点，如果当前节点是头节点，则打印下一个节点
+     *      3、如果当前节点不是头节点，则先打印下一个节点，再打印当前节点
+     */
+    public static void reverseList(HeroNode node){
+        // 如果是头节点： 则打印下一个节点
+        if(node != null &&  node.no == 0){
+            reverseList(node.next);
+        }
+        // 如果不是头节点：则先打印下一个节点，再再印当前节点
+        if (node != null && node.no != 0) {
+            // 当前节点非空，并且不是头节点
+            // 递归打印下一个节点
+            reverseList(node.next);
+            // 打印该节点
+            System.out.println(node);
+        }
+    }
+
+    /**
+     * 使用栈实现逆向打印链表【百度】
+     *      1、遍历链表，将节点数据入栈
+     *      2、出栈打印
+     */
+    public static void reverseListByStack(HeroNode headNode){
+        if(headNode == null || headNode.next == null){
+            System.out.println("链表为空");
+            return;
+        }
+
+        // 使用栈实现逆序打印
+        Stack<HeroNode> heroNodeStack = new Stack<HeroNode>();
+        // 将节点压入栈中
+        HeroNode cur = headNode.next;
+        while (cur != null){
+            heroNodeStack.push(cur);
+            cur = cur.next;
+        }
+
+        // 出栈打印
+        while (heroNodeStack.size() > 0){
+            System.out.println(heroNodeStack.pop());
+        }
     }
 
 }
