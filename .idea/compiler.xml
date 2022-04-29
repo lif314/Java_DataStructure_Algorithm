@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ch2-linked-list" />
+        <module name="ch3-stack" />
         <module name="ch1-sparsearray-queue" />
       </profile>
     </annotationProcessing>
