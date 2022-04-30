@@ -2,6 +2,7 @@ package calculator;
 
 
 import java.lang.reflect.Array;
+import java.util.Scanner;
 
 /**
  * 使用栈实现简易计算器: 中缀表达式
@@ -24,9 +25,11 @@ import java.lang.reflect.Array;
  */
 public class CalculatorDemo {
     public static void main(String[] args) {
-        String str = "9+3*1-4/2";
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请输入计算式(*,+,/,-): ");
+        String str = scanner.nextLine();
         Calculator calculator = new Calculator(str);
-        System.out.println(calculator.getRes());
+        System.out.println("计算结果：" + calculator.getRes());
     }
 }
 
@@ -87,12 +90,14 @@ class Calculator{
         // 一个操作符
         char op = ' ';
 
+        String keepNum = ""; // 处理多位数
+
         // 计算结果
         int res = 0;
 
         // index: 索引指针
         for(int index = 0; index < expression.length(); index++){
-            // 当前处理到的字符
+            // 当前处理到的字符 -- 连续数字的处理方式
             char curChar = expression.charAt(index);
             if(isOper(curChar)){  // 是符号
                 //如果符号栈为空，则直接入栈
@@ -117,7 +122,27 @@ class Calculator{
                 }
             }else{ // 不是符号，是数字
                 // 直接压入数栈中,将字符串改为数组压入符号栈中
-                numStack.push(curChar - '0');
+               //  numStack.push(curChar - '0');
+
+                // 如果是连续的数字，需要向后再看一位
+                // 如果下一位是数字，则继续看下一位
+                // 如果下一位是符号，则入栈
+
+                // 处理多位数
+                keepNum += curChar;
+                if(index == expression.length() - 1){
+                    // 最后一位，直接入栈
+                    numStack.push(Integer.parseInt(keepNum));
+                }else{
+                    // 判断下一个字符是否为数字
+                    if(isOper(expression.charAt(index + 1))){
+                        // 是字符，数字入栈
+                        numStack.push(Integer.parseInt(keepNum));
+
+                        // keepNum 清空
+                        keepNum = "";
+                    }
+                }
             }
         }
 
